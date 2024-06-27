@@ -33,3 +33,19 @@ func MsgIDFromCtx(ctx context.Context) string {
 func CtxWithMsgID(ctx context.Context, msgID string) context.Context {
 	return context.WithValue(ctx, msgIndentifyKey{}, msgID)
 }
+
+type traceIdKey struct{}
+
+func TraceIDFromCtx(ctx context.Context) string {
+	if ctx == nil {
+		return ""
+	}
+	if v, ok := ctx.Value(traceIdKey{}).(string); ok {
+		return v
+	}
+	return ""
+}
+
+func CtxWithTraceId(ctx context.Context, traceId string) context.Context {
+	return context.WithValue(ctx, traceIdKey{}, traceId)
+}
