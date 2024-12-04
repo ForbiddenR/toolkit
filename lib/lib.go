@@ -14,18 +14,11 @@ import (
 
 func IntToBytes(data uint, len int) []byte {
 	bys := make([]byte, len)
-	for i := 0; i < len; i++ {
-		bys[i] = byte(data >> uint(8*i))
+	le := len -1
+	for i := range bys {
+		bys[i] = byte(data>> uint(((le-i)*8)))
 	}
 	return bys
-}
-
-func BytesToInt(bys []byte) uint {
-	var data uint
-	for i := 0; i < len(bys); i++ {
-		data += (uint(bys[i]) << uint(8*i))
-	}
-	return data
 }
 
 func BCDToString(bcd []byte) string {
@@ -103,8 +96,17 @@ func FillMAX(payload []byte, length int) []byte {
 	return payload
 }
 
+func BytesToInt(bys []byte) uint {
+	var data uint
+	le := len(bys) - 1
+	for i, v := range bys {
+		data |= (uint(v) << uint(8*(le-i)))
+	}
+	return data
+}
+
 func BytesToInt16(buf []byte) int {
-	return int(binary.LittleEndian.Uint16(buf))
+	return int(binary.BigEndian.Uint16(buf))
 }
 
 func Int16ToBytes(n int) []byte {
