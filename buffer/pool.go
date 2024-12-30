@@ -1,8 +1,6 @@
 package buffer
 
 import (
-	"sync"
-
 	"github.com/ForbiddenR/toolkit/pool"
 )
 
@@ -13,12 +11,16 @@ type Pool struct {
 
 func NewPool() Pool {
 	return Pool{
-		p: pool.New()
+		p: pool.New(func() *Buffer {
+			return &Buffer{
+				bs: make([]byte, 0, _size),
+			}
+		}),
 	}
 }
 
 func (p Pool) Get() *Buffer {
-	buf := p.p.Get().(*Buffer)
+	buf := p.p.Get()
 	buf.Reset()
 	buf.pool = p
 	return buf

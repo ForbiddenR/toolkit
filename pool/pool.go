@@ -9,17 +9,17 @@ type Pool[T any] struct {
 func New[T any](new func() T) *Pool[T] {
 	return &Pool[T]{
 		p: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new()
 			},
 		},
 	}
 }
 
-func (p Pool[t]) Get() t {
-	return p.p.Get().(t)
+func (p Pool[T]) Get() T {
+	return p.p.Get().(T)
 }
 
-func (p Pool[t]) Put(r t) {
-	p.p.Put(r)
+func (p Pool[T]) Put(x T) {
+	p.p.Put(x)
 }
