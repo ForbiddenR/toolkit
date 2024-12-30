@@ -2,16 +2,12 @@ package pool
 
 import "sync"
 
-type Resource interface {
-	Reset()
-}
-
-type Pool[t Resource] struct {
+type Pool[T any] struct {
 	p *sync.Pool
 }
 
-func NewPool[t Resource](new func() t) *Pool[t] {
-	return &Pool[t]{
+func New[T any](new func() T) *Pool[T] {
+	return &Pool[T]{
 		p: &sync.Pool{
 			New: func() interface{} {
 				return new()
@@ -25,6 +21,5 @@ func (p Pool[t]) Get() t {
 }
 
 func (p Pool[t]) Put(r t) {
-	r.Reset()
 	p.p.Put(r)
 }

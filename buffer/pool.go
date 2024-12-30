@@ -1,18 +1,19 @@
 package buffer
 
-import "sync"
+import (
+	"sync"
+
+	"github.com/ForbiddenR/toolkit/pool"
+)
 
 type Pool struct {
-	p *sync.Pool
+	// p *sync.Pool
+	p *pool.Pool[*Buffer]
 }
 
 func NewPool() Pool {
 	return Pool{
-		p: &sync.Pool{
-			New: func() interface{} {
-				return &Buffer{bs: make([]byte, 0, _size)}
-			},
-		},
+		p: pool.New()
 	}
 }
 
