@@ -1,6 +1,9 @@
 package buffer
 
-import "strconv"
+import (
+	"strconv"
+	"unicode/utf8"
+)
 
 const _size = 1024
 
@@ -25,6 +28,12 @@ func (b *Buffer) Write(bs []byte) (int, error) {
 func (b *Buffer) WriteByte(v byte) error {
 	b.bs = append(b.bs, v)
 	return nil
+}
+
+func (b *Buffer) WriteRune(r rune) (int, error) {
+	n := len(b.bs)
+	b.bs = utf8.AppendRune(b.bs, r)
+	return len(b.bs) - n, nil
 }
 
 func (b *Buffer) WriteString(s string) (int, error) {
