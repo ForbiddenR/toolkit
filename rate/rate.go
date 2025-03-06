@@ -11,12 +11,12 @@ type Limiter struct {
 	lock     sync.Locker
 }
 
-func NewLimiter(duration time.Duration) *Limiter {
+func NewLimiter(duration time.Duration, diff time.Duration) *Limiter {
 	limiter := &Limiter{
 		duration: duration,
 		lock:     &sync.Mutex{},
 	}
-	limiter.actTime = time.Now()
+	limiter.actTime = time.Now().Add(-diff)
 	return limiter
 }
 
