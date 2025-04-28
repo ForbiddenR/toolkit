@@ -14,9 +14,9 @@ import (
 
 func IntToBytes(data uint, len int) []byte {
 	bys := make([]byte, len)
-	le := len -1
+	le := len - 1
 	for i := range bys {
-		bys[i] = byte(data>> uint(((le-i)*8)))
+		bys[i] = byte(data >> uint(((le - i) * 8)))
 	}
 	return bys
 }
@@ -79,7 +79,7 @@ func hex2Byte(str string) []byte {
 func FillZero(payload []byte, length int) []byte {
 	l := len(payload)
 	if l < length {
-		for i := 0; i < length; i++ {
+		for range length {
 			payload = append(payload, 0x00)
 		}
 	}
@@ -89,7 +89,7 @@ func FillZero(payload []byte, length int) []byte {
 func FillMAX(payload []byte, length int) []byte {
 	l := len(payload)
 	if l < length {
-		for i := 0; i < length-l; i++ {
+		for range length - l {
 			payload = append(payload, 0xFF)
 		}
 	}
@@ -225,7 +225,7 @@ func BCDToUint64(value []byte) uint64 {
 
 func ReserveBytes(b []byte) []byte {
 	_b := make([]byte, len(b))
-	for i := 0; i < len(b); i++ {
+	for i := range len(b) {
 		_b[i] = b[len(b)-1-i]
 	}
 	return _b
